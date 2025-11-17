@@ -15,7 +15,7 @@ SPEAKER_NAMES = [
 def find_audio_file(name):
     extensions = ['.mp3', '.wav', '.flac', '.m4a']
     for ext in extensions:
-        file_path = Path(f"{name}{ext}")
+        file_path = Path(f"samples/{name}{ext}")
         if file_path.exists():
             return file_path
     return None
@@ -46,7 +46,7 @@ for name in SPEAKER_NAMES:
         fingerprints[name] = fingerprint
         
         # 4. Save the fingerprint to a new file
-        output_filename = f"{name}_fingerprint.npy"
+        output_filename = f"samples/{name}_fingerprint.npy"
         np.save(output_filename, fingerprint)
         
         print(f"  ✅ Success! Fingerprint saved to {output_filename}")

@@ -55,7 +55,7 @@ ENROLLED_SPEAKERS = [
 print("Loading speaker fingerprints...")
 speaker_fingerprints = {}
 for name in ENROLLED_SPEAKERS:
-    fingerprint_file = f"{name}_fingerprint.npy"
+    fingerprint_file = f"samples/{name}_fingerprint.npy"
     if not os.path.exists(fingerprint_file):
         print(f"⚠️ WARNING: Fingerprint file not found for {name}. Skipping.")
     else:
