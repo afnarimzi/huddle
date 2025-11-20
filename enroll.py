@@ -3,57 +3,39 @@ from pathlib import Path
 from resemblyzer import VoiceEncoder, preprocess_wav
 import numpy as np
 
-# --- 1. CONFIGURE YOUR SPEAKERS ---
+SPEAKER_NAMES = ["Afna Rimzi", "Sinana", "Telna Chacko"]
 
-SPEAKER_NAMES = [
-    "Afna Rimzi",
-    "Sinana",
-    "Telna Chacko"
-]
+SAMPLES_DIR = Path("samples")  # <--- FORCE DIRECTORY
 
-# Find audio files (supports .mp3, .wav, .flac)
+print("Looking in directory:", SAMPLES_DIR.resolve())
+
 def find_audio_file(name):
-    extensions = ['.mp3', '.wav', '.flac', '.m4a']
-    for ext in extensions:
-        file_path = Path(f"samples/{name}{ext}")
-        if file_path.exists():
-            return file_path
+    print(f"Searching for: {name} inside {SAMPLES_DIR.resolve()}")
+    for ext in [".mp3", ".wav", ".flac", ".m4a"]:
+        fp = SAMPLES_DIR / f"{name}{ext}"
+        print("Checking:", fp.resolve())
+        if fp.exists():
+            print("FOUND:", fp.resolve())
+            return fp
+    print("NOT FOUND:", name)
     return None
 
-# Load the VoiceEncoder model
 print("Loading VoiceEncoder model...")
 encoder = VoiceEncoder()
 
-print("\nStarting enrollment process...")
-fingerprints = {}
-
 for name in SPEAKER_NAMES:
-    print(f"\nProcessing: {name}")
-    
-    # 1. Find the audio file
-    audio_path = find_audio_file(name)
-    if not audio_path:
-        print(f"  ❌ ERROR: Could not find audio file for '{name}'.")
-        print(f"           Make sure '{name}.mp3' or '{name}.wav' exists.")
+    print("\nProcessing:", name)
+    audio = find_audio_file(name)
+
+    if not audio:
+        print("❌ File missing:", name)
         continue
 
-    try:
-        # 2. Load and preprocess the audio
-        wav = preprocess_wav(audio_path)
-        
-        # 3. Create the voice fingerprint (embedding)
-        fingerprint = encoder.embed_utterance(wav)
-        fingerprints[name] = fingerprint
-        
-        # 4. Save the fingerprint to a new file
-        output_filename = f"samples/{name}_fingerprint.npy"
-        np.save(output_filename, fingerprint)
-        
-        print(f"  ✅ Success! Fingerprint saved to {output_filename}")
+    wav = preprocess_wav(audio)
+    fp = encoder.embed_utterance(wav)
 
-    except Exception as e:
-        print(f"  ❌ ERROR processing {name}: {e}")
+    out = SAMPLES_DIR / f"{name}_fingerprint.npy"
+    np.save(out, fp)
+    print("✅ Saved fingerprint:", out.resolve())
 
-print("\n--- Enrollment Complete! ---")
-print("You now have .npy files for each speaker.")
-print("You can now restart your main server (`python3 main.py`)")
+print("\n DONE \n")

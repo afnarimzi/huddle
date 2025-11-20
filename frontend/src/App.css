@@ -1,15 +1,37 @@
-body {
-  background-color: #282c34;
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+/* --- GLOBAL & FONT --- */
+:root {
+  --bg-dark: #202124;
+  --bg-light: #303134;
+  --border-color: #5f6368;
+  --accent-blue: #89b4f8;
+  --accent-green: #34a853;
+  --text-primary: #e8eaed;
+  --text-secondary: #bdc1c6;
+  --error-red: #f28b82;
+  --card-elev: rgba(0,0,0,0.25);
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* App container */
 .App {
-  text-align: center;
-  max-width: 900px;
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 20px;
 }
 
 .App-header {
@@ -17,108 +39,301 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  padding-top: 40px;   /* ensures header/buttons are visible above the fold */
+  padding-bottom: 40px;
+}
+
+/* Title */
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+  width: 100%;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin-bottom: 10px;
 }
 
-.card {
-  background-color: #3b3f46;
-  border-radius: 8px;
-  padding: 24px;
-  margin-top: 20px;
-  width: 90%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.error {
-  background-color: #5a2a2a;
-  border: 1px solid #ff4d4d;
-}
-
-input[type="file"] {
-  display: block;
-  margin: 20px auto;
-  font-size: 16px;
-}
-
-button {
-  background-color: #61dafb;
-  border: none;
-  color: #282c34;
-  padding: 12px 24px;
+.title-container h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 18px;
-  font-weight: bold;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: 0.3s;
 }
 
-button:hover {
-  background-color: #ffffff;
+/* --- CARD LAYOUTS --- */
+.card {
+  background-color: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 28px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  box-shadow: 0 8px 20px var(--card-elev);
+}
+
+.card h3, .card h4 {
+  margin-top: 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* helper divider */
+.or-divider {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 25px 0;
+  text-align: center;
+}
+
+/* --- BUTTONS --- */
+button {
+  border: none;
+  padding: 12px 22px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 6px 6px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.18s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  opacity: 0.95;
 }
 
 button:disabled {
-  background-color: #555;
-  color: #aaa;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* --- Results Section --- */
-.result-section {
-  text-align: left;
+/* recording / stop */
+.record-button {
+  background-color: #d93025;
+  color: white;
+  padding: 12px 26px;
+}
+.record-button:hover:not(:disabled) { background-color: #e64a19; }
+
+.stop-button {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+.stop-button:hover:not(:disabled) { background-color: #4a4a4f; }
+
+/* action buttons */
+.analyze-button {
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  background-color: var(--accent-green);
+  color: #202124;
+  font-weight: 700;
+  margin-top: 20px;
+  border-radius: 12px;
+}
+.start-over-button {
+  background-color: var(--accent-blue);
+  color: var(--bg-dark);
+  font-weight: 700;
   margin-top: 20px;
 }
 
-.summary-box {
-  background-color: #282c34;
-  padding: 15px;
-  border-radius: 4px;
-  white-space: pre-wrap; /* This keeps line breaks */
-  font-family: monospace;
-  font-size: 16px;
-  line-height: 1.6;
+/* small toggle buttons row */
+.mode-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
 }
 
-.timeline-box {
-  background-color: #282c34;
-  padding: 15px;
-  border-radius: 4px;
-  max-height: 400px;
-  overflow-y: auto;
-  font-size: 16px;
+/* --- FORM & UPLOAD --- */
+.form-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-.turn {
-  margin-bottom: 12px;
+.button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.speaker {
-  font-weight: bold;
-  color: #61dafb;
+.status-text {
+  text-transform: capitalize;
+  font-weight: 700;
+  color: var(--accent-blue);
+  display: inline-block;
+  margin-left: 8px;
 }
 
-.text {
-  margin: 0;
-  padding-left: 10px;
-  line-height: 1.6;
+/* audio player & file input styles */
+.audio-player {
+  width: 100%;
+  margin-top: 20px;
 }
 
-/* Spinner for loading */
+.file-input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.file-label {
+  background-color: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-block;
+  color: var(--text-primary);
+}
+.file-label:hover { background-color: #4a4a4f; }
+
+/* --- STATUS & RESULTS --- */
+.spinner-container {
+  text-align: center;
+  margin-top: 30px;
+}
 .spinner {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #61dafb;
+  border: 6px solid var(--bg-light);
+  border-top: 6px solid var(--accent-blue);
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   animation: spin 1s linear infinite;
   margin: 20px auto;
 }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.error {
+  background-color: #442f2f;
+  border-color: var(--error-red);
+  color: var(--error-red);
+  text-align: center;
+}
+
+/* results layout */
+.results-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.summary-card { grid-column: 1 / -1; }
+.transcript-card { grid-column: 1 / -1; }
+
+/* summary / timeline boxes */
+.summary-box, .timeline-box {
+  background-color: var(--bg-dark);
+  padding: 16px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+/* individual transcript turn */
+.turn {
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(255,255,255,0.03);
+}
+
+/* speaker badge + timestamp */
+.speaker {
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+
+/* spoken text */
+.text {
+  margin: 6px 0 0 0;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* live transcript container (in RealtimeTranscriber) */
+.live-container {
+  margin-top: 20px;
+  padding: 20px;
+  background: #eeeeee;
+  color: #000;
+  min-height: 200px;
+  width: 100%;
+  border-radius: 12px;
+  text-align: left;
+  font-size: 18px;
+}
+
+/* small code-style pre for summaries */
+.summary-box pre {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+}
+
+/* --- Responsive layout for larger screens --- */
+@media (min-width: 800px) {
+  .results-container {
+    grid-template-columns: 1fr 1fr;
+  }
+  .transcript-card {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+    max-height: 70vh;
+  }
+  .timeline-box {
+    max-height: calc(70vh - 80px);
+  }
+  .summary-card {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+  .start-over-button {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    align-self: start;
+    justify-self: start;
+  }
+}
+
+/* mobile tweaks */
+@media (max-width: 600px) {
+  .title-container h1 {
+    font-size: 1.6rem;
+    padding: 0 10px;
+  }
+  .card { padding: 18px; border-radius: 8px; }
+  .live-container { font-size: 16px; min-height: 160px; }
+  button { padding: 10px 16px; font-size: 14px; }
 }
